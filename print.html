@@ -1,0 +1,431 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>DUMMY RUSTY NOTE</title>
+        <meta name="robots" content="noindex">
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('light')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="info.html">笔者信息</a></li><li class="chapter-item expanded affix "><li class="part-title">笔记</li><li class="chapter-item expanded "><a href="mdbook/mod.html"><strong aria-hidden="true">1.</strong> mdBook</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="mdbook/01.html"><strong aria-hidden="true">1.1.</strong> 自动部署至 Github Page</a></li></ol></li><li class="chapter-item expanded "><a href="actix/mod.html"><strong aria-hidden="true">2.</strong> Actix</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="actix/01.html"><strong aria-hidden="true">2.1.</strong> 上传文件</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">DUMMY RUSTY NOTE</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 align="center">Hi 👋, I'm coalooball</h1>
+<ul>
+<li>email : <strong>cyan_cg@outlook.com</strong></li>
+<li>GitHub : <a href="https://github.com/coalooball">coalooball</a></li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><div style="break-before: page; page-break-before: always;"></div><h1 id="将写好的-mdbook-自动部署到-github-仓库的-gh-pages-分支"><a class="header" href="#将写好的-mdbook-自动部署到-github-仓库的-gh-pages-分支">将写好的 mdBook 自动部署到 GitHub 仓库的 gh-pages 分支</a></h1>
+<h2 id="关联问题"><a class="header" href="#关联问题">关联问题</a></h2>
+<p><a href="https://users.rust-lang.org/t/publishing-mdbook-on-github-page/75132">Publishing mdBook on Github Page</a></p>
+<h2 id="解决方法"><a class="header" href="#解决方法">解决方法</a></h2>
+<p><a href="https://github.com/rust-lang/mdBook/wiki/Automated-Deployment%3A-GitHub-Actions">Automated Deployment: GitHub Actions</a></p>
+<h2 id="笔者言"><a class="header" href="#笔者言">笔者言</a></h2>
+<p>解决方法里有一些需要配置 Action, 可以按照这一小节<a href="https://github.com/rust-lang/mdBook/wiki/Automated-Deployment%3A-GitHub-Actions#raw-example">Raw Example</a>。</p>
+<p>在 mdBook 根目录创建文件 <a href="mdbook/01.html#ymal-file-for-deploy"><code>.github/workflows/deploy.yml</code></a>。每次修改推送后, GitHub 会在当前分支和 gh-pages 分支进行CI/CD, 部署成功后即可在路由 <code>https://&lt;GitHub用户名&gt;.github.io/&lt;仓库名&gt;/</code> 看到写好的 mdBook !</p>
+<h6 id="ymal-file-for-deploy"><a class="header" href="#ymal-file-for-deploy">YMAL File for Deploy</a></h6>
+<pre><code class="language-yaml">name: Deploy
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write  # To push a branch 
+      pull-requests: write  # To create a PR from that branch
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    - name: Install latest mdbook
+      run: |
+        tag=$(curl 'https://api.github.com/repos/rust-lang/mdbook/releases/latest' | jq -r '.tag_name')
+        url="https://github.com/rust-lang/mdbook/releases/download/${tag}/mdbook-${tag}-x86_64-unknown-linux-gnu.tar.gz"
+        mkdir mdbook
+        curl -sSL $url | tar -xz --directory=./mdbook
+        echo `pwd`/mdbook &gt;&gt; $GITHUB_PATH
+    - name: Deploy GitHub Pages
+      run: |
+        # This assumes your book is in the root of your repository.
+        # Just add a `cd` here if you need to change to another directory.
+        mdbook build
+        git worktree add gh-pages
+        git config user.name "Deploy from CI"
+        git config user.email ""
+        cd gh-pages
+        # Delete the ref to avoid keeping history.
+        git update-ref -d refs/heads/gh-pages
+        rm -rf *
+        mv ../book/* .
+        git add .
+        git commit -m "Deploy $GITHUB_SHA to gh-pages"
+        git push --force --set-upstream origin gh-pages
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="actix"><a class="header" href="#actix">Actix</a></h1>
+<p>记录与 <a href="https://actix.rs/">Actix</a> 相关的开发代码。</p>
+<div style="break-before: page; page-break-before: always;"></div><p>Actix 官方没有描述如何上传文件, 以下是<a href="actix/01.html#%E5%8F%82%E8%80%83">参考网友的资料</a>整理的。<br />
+为了简洁, 将<a href="actix/01.html#%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE">环境配置</a>相关信息放到文章最后了。</p>
+<h2 id="上传一个文件"><a class="header" href="#上传一个文件">上传一个文件</a></h2>
+<p>这段代码是改写<a href="https://crates.io/crates/actix-multipart">actix-multipart</a>页面的示例的。</p>
+<pre><code class="language-rs">use std::io::Read;
+use actix_web::{post, App, HttpServer, Responder};
+use actix_multipart::form::{tempfile::TempFile, MultipartForm};
+
+#[derive(Debug, MultipartForm)]
+struct UploadForm {
+    #[multipart(limit = "100MB")]
+    file: TempFile,
+}
+
+#[post("/upload")]
+pub async fn upload(MultipartForm(mut form): MultipartForm&lt;UploadForm&gt;) -&gt; impl Responder {
+    // 获得文件 Bytes
+    let mut buffer = vec![];
+    let _ = form.file.file.read_to_end(&amp;mut buffer);
+    format!(
+        "Uploaded file {:?}, with size: {}",
+        form.file.file_name, form.file.size
+    )
+}
+
+#[actix_web::main]
+async fn main() -&gt; std::io::Result&lt;()&gt; {
+    HttpServer::new(move || App::new().service(upload))
+        .bind(("127.0.0.1", 8080))?
+        .run()
+        .await
+}
+
+</code></pre>
+<h3 id="请求"><a class="header" href="#请求">请求</a></h3>
+<pre><code class="language-rb">require "uri"
+require "net/http"
+url = URI("http://127.0.0.1:8080/upload")
+http = Net::HTTP.new(url.host, url.port);
+request = Net::HTTP::Post.new(url)
+form_data = [['file', File.open("/file/path")]]
+request.set_form form_data, 'multipart/form-data'
+response = http.request(request)
+puts response.read_body
+</code></pre>
+<h2 id="上传文件并且添加描述信息"><a class="header" href="#上传文件并且添加描述信息">上传文件并且添加描述信息</a></h2>
+<pre><code class="language-rs">use actix_multipart::form::{tempfile::TempFile, text::Text, MultipartForm};
+use actix_web::{post, App, HttpServer, Responder};
+
+#[derive(Debug, MultipartForm)]
+struct UploadForm {
+    #[multipart(limit = "100MB")]
+    file: TempFile,
+    desc: Text&lt;String&gt;,
+}
+
+#[post("/upload")]
+pub async fn upload(MultipartForm(form): MultipartForm&lt;UploadForm&gt;) -&gt; impl Responder {
+    format!(
+        "Uploaded file {:?}, with size: {}, description: {:?}",
+        form.file.file_name, form.file.size, form.desc
+    )
+}
+
+#[actix_web::main]
+async fn main() -&gt; std::io::Result&lt;()&gt; {
+    HttpServer::new(move || App::new().service(upload))
+        .bind(("127.0.0.1", 8080))?
+        .run()
+        .await
+}
+</code></pre>
+<h3 id="请求-1"><a class="header" href="#请求-1">请求</a></h3>
+<pre><code class="language-rb">require "uri"
+require "net/http"
+
+url = URI("http://127.0.0.1:8080/upload")
+
+http = Net::HTTP.new(url.host, url.port);
+request = Net::HTTP::Post.new(url)
+form_data = [['file', File.open('/file/path')],['desc', "example"]]
+request.set_form form_data, 'multipart/form-data'
+response = http.request(request)
+puts response.read_body
+</code></pre>
+<h2 id="上传多个文件一个参数里传输多个文件"><a class="header" href="#上传多个文件一个参数里传输多个文件">上传多个文件（一个参数里传输多个文件）</a></h2>
+<p>这个笔者没有找到相关资料, 是笔者自己试出来的代码。</p>
+<pre><code class="language-rs">use actix_multipart::form::{tempfile::TempFile, MultipartForm};
+use actix_web::{post, App, HttpServer, Responder};
+
+#[derive(Debug, MultipartForm)]
+struct UploadForm {
+    #[multipart(limit = "100MB")]
+    file: Vec&lt;TempFile&gt;,
+}
+
+#[post("/upload")]
+pub async fn upload(MultipartForm(form): MultipartForm&lt;UploadForm&gt;) -&gt; impl Responder {
+    let mut s = String::new();
+    for f in form.file {
+        s.push_str(&amp;format!(
+            "Uploaded file {:?}, with size: {} \n",
+            f.file_name, f.size
+        ))
+    }
+    s
+}
+
+#[actix_web::main]
+async fn main() -&gt; std::io::Result&lt;()&gt; {
+    HttpServer::new(move || App::new().service(upload))
+        .bind(("127.0.0.1", 8080))?
+        .run()
+        .await
+}
+</code></pre>
+<h3 id="请求-2"><a class="header" href="#请求-2">请求</a></h3>
+<pre><code class="language-rb">require "uri"
+require "net/http"
+url = URI("http://127.0.0.1:8080/upload")
+http = Net::HTTP.new(url.host, url.port);
+request = Net::HTTP::Post.new(url)
+form_data = [['file', File.open('/file1')],['file', File.open('/file2')]]
+request.set_form form_data, 'multipart/form-data'
+response = http.request(request)
+puts response.read_body
+
+</code></pre>
+<h1 id="环境配置"><a class="header" href="#环境配置">环境配置</a></h1>
+<h2 id="版本信息"><a class="header" href="#版本信息">版本信息</a></h2>
+<pre><code class="language-sh">rustc --version
+# =&gt; rustc 1.80.1 (3f5fd8dd4 2024-08-06)
+cargo --version
+# =&gt; cargo 1.80.1 (376290515 2024-07-16)
+</code></pre>
+<h2 id="crates"><a class="header" href="#crates">Crates</a></h2>
+<p>创建空目录, 初始化项目。添加 crate :</p>
+<pre><code class="language-sh">cargo add actix-web
+cargo add actix-multipart
+</code></pre>
+<h2 id="cargotoml"><a class="header" href="#cargotoml">Cargo.toml</a></h2>
+<pre><code class="language-ini">[package]
+name = "test1"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+actix-multipart = "0.7.2"
+actix-web = "4.9.0"
+
+</code></pre>
+<h6 id="参考"><a class="header" href="#参考">参考</a></h6>
+<p><a href="https://users.rust-lang.org/t/file-upload-in-actix-web/64871">File upload in Actix Web</a><br />
+<a href="https://crates.io/crates/actix-multipart">actix-multipart</a></p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+        <script>
+        window.addEventListener('load', function() {
+            window.setTimeout(window.print, 100);
+        });
+        </script>
+
+    </div>
+    </body>
+</html>
